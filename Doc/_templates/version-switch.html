@@ -1,18 +1,12 @@
-<div class="version-switcher" style="margin-top: 1em;">
-  <label for="version-select" style="font-weight: bold;">Version:</label>
-  <select id="version-select" onchange="onVersionChange()">
-    {% for version in versions %}
-      <option value="{{ version.url }}" {% if version.name == current_version %}selected{% endif %}>
+{% if smv_versions %}
+<div class="version-switcher">
+  <label for="version-select">Version:</label>
+  <select id="version-select" onchange="window.location.href=this.value;">
+    {% for version in smv_versions %}
+      <option value="{{ version.url }}" {% if version.name == smv_current_version %} selected {% endif %}>
         {{ version.name }}
       </option>
     {% endfor %}
   </select>
 </div>
-
-<script>
-  function onVersionChange() {
-    var select = document.getElementById("version-select");
-    var selectedUrl = select.options[select.selectedIndex].value;
-    window.location.href = selectedUrl;
-  }
-</script>
+{% endif %}

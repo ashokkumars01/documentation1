@@ -1,18 +1,15 @@
 [tool.poetry]
-name = "your-project"
+name = "your-doc-project"
 version = "0.1.0"
-description = ""
+description = "Documentation for your project using Sphinx"
 authors = ["Your Name <you@example.com>"]
-
-# 👇 This disables packaging mode (no need to install the current project)
-package-mode = false
+license = "MIT"
 
 [tool.poetry.dependencies]
 python = "^3.11"
-sphinx = "^7.2"
-sphinx-rtd-theme = "^2.0"
+sphinx = "^7.2.6"
 sphinx-multiversion = "^0.2.4"
-myst-parser = "^2.0"
+myst-parser = "^2.0.0"  # Only if using Markdown (.md) files
 
 [build-system]
 requires = ["poetry-core"]

@@ -1,9 +1,8 @@
-name: Deploy Sphinx Docs to GitHub Pages
+name: Deploy Docs to GitHub Pages
 
 on:
   push:
-    branches:
-      - master
+    branches: [main]
     tags:
       - 'v*'
 
@@ -11,31 +10,30 @@ permissions:
   contents: write
 
 jobs:
-  build:
+  deploy-docs:
     runs-on: ubuntu-latest
+
     steps:
-      - name: Checkout repository
+      - name: Checkout code
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
           fetch-tags: true
 
-      - name: Set up Python
+      - name: Setup Python
         uses: actions/setup-python@v5
         with:
           python-version: 3.11
 
       - name: Install Poetry
-        uses: snok/install-poetry@v1
+        run: pip install poetry
 
       - name: Install dependencies
-        run: |
-          poetry install --no-interaction --no-root
+        run: poetry install
 
-      - name: Build multiversion HTML
+      - name: Build versioned docs
         working-directory: Doc
-        run: |
-          poetry run sphinx-multiversion . _build/html
+        run: poetry run sphinx-multiversion . _build/html
 
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v4
@@ -43,4 +41,3 @@ jobs:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: Doc/_build/html
           publish_branch: gh-pages
-          keep_files: true

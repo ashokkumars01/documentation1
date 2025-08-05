@@ -1,12 +1,17 @@
-{% if smv_versions %}
-<div class="version-switcher">
-  <label for="version-select">Version:</label>
-  <select id="version-select" onchange="window.location.href=this.value;">
+<div class="version-switcher" style="padding: 0.5em 1em;">
+  <label for="version-select"><strong>Version:</strong></label>
+  <select id="version-select" onchange="onVersionChange(this)">
     {% for version in smv_versions %}
-      <option value="{{ version.url }}" {% if version.name == smv_current_version %} selected {% endif %}>
+      <option value="{{ version.url }}" {% if version.name == smv_current_version %}selected{% endif %}>
         {{ version.name }}
       </option>
     {% endfor %}
   </select>
 </div>
-{% endif %}
+
+<script>
+  function onVersionChange(select) {
+    const newUrl = select.value + window.location.pathname.replace(/^\/[^\/]+/, '');
+    window.location.href = newUrl;
+  }
+</script>

@@ -20,7 +20,7 @@ html_theme = 'sphinx_rtd_theme'  # or 'furo', etc.
 
 smv_tag_whitelist = r'^v\d+\.\d+\.\d+$'    # build tags like v1.0.0
 smv_branch_whitelist = r'^master$'          # build only master branch for latest
-smv_latest_version = 'master'                # treat master branch as latest
+smv_latest_version = 'latest'                # treat master branch as latest
 smv_rename_latest_version = 'latest'
 
 html_sidebars = {

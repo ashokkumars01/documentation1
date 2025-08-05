@@ -1,7 +1,8 @@
 extensions = [
-    'sphinx_multiversion',
-    'myst_parser',  # only if you're using Markdown (.md) files
-    ...
+    "sphinx.ext.autodoc",
+    "sphinx.ext.viewcode",
+    "sphinx.ext.napoleon",
+    "sphinx_multiversion"
 ]
 
 templates_path = ['_templates']

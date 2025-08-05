@@ -9,7 +9,9 @@ license = "MIT"
 python = "^3.11"
 sphinx = "^7.2.6"
 sphinx-multiversion = "^0.2.4"
-myst-parser = "^2.0.0"  # Only if using Markdown (.md) files
+sphinx-rtd-theme = "^1.2.1"  # add this line
+myst-parser = "^2.0.0"       # if you use Markdown docs
+
 
 [build-system]
 requires = ["poetry-core"]

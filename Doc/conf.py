@@ -12,7 +12,7 @@ extensions = [
     'sphinx_multiversion',
     'myst_parser',  # only if you use Markdown files
 ]
-
+html_theme = "sphinx_rtd_theme"
 templates_path = ['_templates']
 exclude_patterns = []
 

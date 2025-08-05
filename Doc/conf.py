@@ -31,6 +31,7 @@ html_sidebars = {
         'globaltoc.html',
         'relations.html',
         'searchbox.html',
+        'layout.html'
     ]
 }
 html_js_files = ["versioning.js"]

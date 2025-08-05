@@ -1,0 +1,24 @@
+<select id="version-switcher"></select>
+<script>
+  fetch('/versions.json')
+    .then(response => response.json())
+    .then(data => {
+      const select = document.getElementById('version-switcher');
+      const currentPath = window.location.pathname;
+      const currentVersion = currentPath.split('/')[1]; // 'latest', 'v1.0.2', etc.
+
+      data.forEach(v => {
+        const option = document.createElement('option');
+        option.value = v.url;
+        option.textContent = v.version;
+        if (v.version === currentVersion) option.selected = true;
+        select.appendChild(option);
+      });
+
+      select.addEventListener('change', function () {
+        const target = this.value;
+        const restOfPath = window.location.pathname.split('/').slice(2).join('/');
+        window.location.href = target + restOfPath;
+      });
+    });
+</script>

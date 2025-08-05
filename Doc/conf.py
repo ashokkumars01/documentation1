@@ -13,4 +13,4 @@ html_context = {
 
 smv_tag_whitelist = r'^v\d+\.\d+\.\d+$'
 smv_branch_whitelist = r'^master$'
-smv_latest_version = 'main'
+smv_latest_version = 'master'

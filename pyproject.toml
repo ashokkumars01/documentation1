@@ -1,0 +1,19 @@
+[tool.poetry]
+name = "your-project"
+version = "0.1.0"
+description = ""
+authors = ["Your Name <you@example.com>"]
+
+# 👇 This disables packaging mode (no need to install the current project)
+package-mode = false
+
+[tool.poetry.dependencies]
+python = "^3.11"
+sphinx = "^7.2"
+sphinx-rtd-theme = "^2.0"
+sphinx-multiversion = "^0.2.4"
+myst-parser = "^2.0"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"

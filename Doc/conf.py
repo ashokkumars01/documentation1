@@ -33,3 +33,4 @@ html_sidebars = {
         'searchbox.html',
     ]
 }
+html_js_files = ["versioning.js"]

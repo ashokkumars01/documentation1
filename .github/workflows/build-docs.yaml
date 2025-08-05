@@ -24,6 +24,9 @@ jobs:
         uses: actions/setup-python@v5
         with:
           python-version: 3.11
+      - name: Generate versions.json
+        run: |
+          echo '[{"version": "master", "url": "/master/"}, {"version": "v1.0.2", "url": "/v1.0.2/"}, {"version": "v1.0.0", "url": "/v1.0.0/"}]' > build/versions.json
 
       - name: Install Poetry
         run: pip install poetry

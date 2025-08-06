@@ -1,53 +1,32 @@
 {% extends "!layout.html" %}
-
-{% block footer %}
+{% block extrahead %}
   {{ super() }}
-
-  <!-- 🔻 Version Switcher UI + Script -->
-  <div class="version-switcher" style="position: fixed; top: 10px; right: 20px; z-index: 9999;">
-    <span id="rst-current-version" style="cursor: pointer; background: #f0f0f0; padding: 6px 10px; border-radius: 4px;">
-      Version ▼
-    </span>
-    <ul id="version-list" style="list-style: none; margin: 0; padding: 0; display: none; background: white; border: 1px solid #ccc; border-radius: 4px; position: absolute; right: 0; top: 30px;">
-    </ul>
-  </div>
-
   <script>
-    fetch("/versions.json")
-      .then(response => response.json())
-      .then(data => {
-        const versionList = document.getElementById("version-list");
-        const currentPath = window.location.pathname;
+    async function loadVersions() {
+      const response = await fetch("/versions.json");
+      const versions = await response.json();
+      const currentPath = window.location.pathname;
+      const currentVersion = currentPath.split("/")[1];
 
-        data.forEach(v => {
-          const li = document.createElement("li");
-          const a = document.createElement("a");
-          a.href = v.url;
-          a.textContent = v.version;
-          a.style.display = "block";
-          a.style.padding = "8px 12px";
-          a.style.textDecoration = "none";
-          a.style.color = "#333";
-          a.onmouseover = () => a.style.background = "#f5f5f5";
-          a.onmouseout = () => a.style.background = "white";
-
-          if (currentPath.startsWith(v.url)) {
-            a.style.fontWeight = "bold";
-          }
-
-          li.appendChild(a);
-          versionList.appendChild(li);
-        });
-
-        document.getElementById("rst-current-version").addEventListener("click", () => {
-          versionList.style.display = versionList.style.display === "none" ? "block" : "none";
-        });
-
-        window.addEventListener("click", (e) => {
-          if (!e.target.closest(".version-switcher")) {
-            versionList.style.display = "none";
-          }
-        });
+      const select = document.createElement("select");
+      select.style.marginLeft = "20px";
+      versions.forEach(version => {
+        const option = document.createElement("option");
+        option.value = version;
+        option.text = version;
+        if (version === currentVersion) option.selected = true;
+        select.appendChild(option);
       });
+
+      select.onchange = () => {
+        const newVersion = select.value;
+        const newPath = currentPath.replace(currentVersion, newVersion);
+        window.location.href = newPath;
+      };
+
+      const container = document.querySelector(".wy-side-nav-search") || document.body;
+      container.appendChild(select);
+    }
+    loadVersions();
   </script>
 {% endblock %}

@@ -6,58 +6,102 @@ on:
     tags:
       - 'v*'
 
-permissions:
-  contents: write
+# permissions:
+#   contents: write
+
+# jobs:
+#   deploy-docs:
+#     runs-on: ubuntu-latest
+
+#     steps:
+#       - name: Checkout code
+#         uses: actions/checkout@v4
+#         with:
+#           fetch-depth: 0
+#           fetch-tags: true
+
+#       - name: Setup Python
+#         uses: actions/setup-python@v5
+#         with:
+#           python-version: 3.11
+      
+
+#       - name: Install Poetry
+#         run: pip install poetry
+
+#       - name: Install jq
+#         run: sudo apt-get install jq
+
+#       - name: Install dependencies
+#         run: poetry install --no-root
+
+#       - name: Build versioned docs
+#         working-directory: Doc
+#         run: poetry run sphinx-multiversion . _build/html
+#       # - name: Generate versions.json
+#       #   run: |
+#       #     mkdir -p Doc/_build/html
+#       #     echo '[{"version": "master", "url": "/master/"}, {"version": "v1.0.2", "url": "/v1.0.2/"}, {"version": "v1.0.0", "url": "/v1.0.0/"}]' > build/versions.json
+
+#       - name: Generate dynamic versions.json
+#         run: |
+#           sudo apt-get install jq -y
+#           mkdir -p Doc/_build/html
+#           git fetch origin gh-pages
+#           git worktree add gh-pages gh-pages
+#           versions=$(ls gh-pages | grep -vE 'index\.html|404\.html' | jq -R -s -c 'split("\n")[:-1] | map({version: ., url: ("/" + . + "/")})')
+#           echo "$versions" > Doc/_build/html/versions.json
+#           git worktree remove gh-pages
+
+#       - name: Deploy to GitHub Pages
+#         uses: peaceiris/actions-gh-pages@v4
+#         with:
+#           github_token: ${{ secrets.GITHUB_TOKEN }}
+#           publish_dir: Doc/_build/html
+#           publish_branch: gh-pages
+#           # force_orphan: true
+
 
 jobs:
-  deploy-docs:
+  build-deploy:
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        version: ["latest", "v1.1.0", "v1.0.0"]
 
     steps:
-      - name: Checkout code
+      - name: Checkout repo
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
-          fetch-tags: true
 
-      - name: Setup Python
+      - name: Set up Python
         uses: actions/setup-python@v5
         with:
-          python-version: 3.11
-      
-
-      - name: Install Poetry
-        run: pip install poetry
-
-      - name: Install jq
-        run: sudo apt-get install jq
+          python-version: '3.11'
 
       - name: Install dependencies
-        run: poetry install --no-root
-
-      - name: Build versioned docs
-        working-directory: Doc
-        run: poetry run sphinx-multiversion . _build/html
-      # - name: Generate versions.json
-      #   run: |
-      #     mkdir -p Doc/_build/html
-      #     echo '[{"version": "master", "url": "/master/"}, {"version": "v1.0.2", "url": "/v1.0.2/"}, {"version": "v1.0.0", "url": "/v1.0.0/"}]' > build/versions.json
-
-      - name: Generate dynamic versions.json
         run: |
-          sudo apt-get install jq -y
-          mkdir -p Doc/_build/html
-          git fetch origin gh-pages
-          git worktree add gh-pages gh-pages
-          versions=$(ls gh-pages | grep -vE 'index\.html|404\.html' | jq -R -s -c 'split("\n")[:-1] | map({version: ., url: ("/" + . + "/")})')
-          echo "$versions" > Doc/_build/html/versions.json
-          git worktree remove gh-pages
+          pip install -r requirements.txt
+
+      - name: Build Sphinx HTML
+        run: |
+          mkdir -p _build/html/${{ matrix.version }}
+          if [[ "${{ matrix.version }}" == "latest" ]]; then
+            sphinx-build -b html Doc _build/html/latest
+          else
+            sphinx-build -b html versions/${{ matrix.version }}/Doc _build/html/${{ matrix.version }}
+          fi
+
+      - name: Copy versions.json
+        run: |
+          echo '["latest", "v1.1.0", "v1.0.0"]' > _build/html/versions.json
 
       - name: Deploy to GitHub Pages
-        uses: peaceiris/actions-gh-pages@v4
+        if: matrix.version == 'latest'
+        uses: peaceiris/actions-gh-pages@v3
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: Doc/_build/html
+          publish_dir: _build/html
           publish_branch: gh-pages
-          # force_orphan: true
 

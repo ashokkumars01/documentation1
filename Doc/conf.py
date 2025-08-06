@@ -15,6 +15,9 @@ extensions = [
 ]
 
 html_theme = "sphinx_rtd_theme"
+html_context = {
+    'display_github': True,
+}
 templates_path = ['_templates']
 exclude_patterns = []
 

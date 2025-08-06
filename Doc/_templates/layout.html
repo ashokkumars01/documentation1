@@ -1,32 +1,29 @@
 {% extends "!layout.html" %}
 
-{% block sidebar2 %}
+{% block extrahead %}
 {{ super() }}
-
 <script>
   fetch("/versions.json")
     .then(response => response.json())
     .then(versions => {
       const current = window.location.pathname.split("/")[1];
       const selector = document.createElement("select");
-      selector.style.margin = "1em 0";
+      selector.style.position = "fixed";
+      selector.style.top = "1em";
+      selector.style.right = "1em";
       selector.onchange = () => {
         const version = selector.value;
         const path = window.location.pathname.split("/").slice(2).join("/");
         window.location.href = "/" + version + "/" + path;
       };
-
       versions.forEach(v => {
-        const option = document.createElement("option");
-        option.value = v.name;
-        option.textContent = v.name;
-        if (v.name === current) {
-          option.selected = true;
-        }
-        selector.appendChild(option);
+        const opt = document.createElement("option");
+        opt.value = v.name;
+        opt.textContent = v.name;
+        if (v.name === current) opt.selected = true;
+        selector.appendChild(opt);
       });
-
-      document.querySelector("div.sphinxsidebarwrapper").prepend(selector);
+      document.body.appendChild(selector);
     });
 </script>
 {% endblock %}

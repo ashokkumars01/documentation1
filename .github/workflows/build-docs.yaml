@@ -92,7 +92,7 @@ jobs:
         run: |
           echo '[' > _build/html/versions.json
           git tag --list 'v*' | sort -V | awk '{print "{ \"name\": \""$1"\" }," }' >> _build/html/versions.json
-          echo '{ "name": "latest" }' >> _build/html/versions.json
+          echo '{ "name": "latest", "url": "/latest/" }' >> _build/html/versions.json
           echo ']' >> _build/html/versions.json
 
       - name: Rename master to latest

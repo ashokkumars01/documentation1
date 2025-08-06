@@ -18,7 +18,7 @@ html_theme = "sphinx_rtd_theme"
 html_context = {
     'display_github': True,
 }
-templates_path = ['_templates']
+templates_path = ['Doc/_templates']
 exclude_patterns = []
 
 html_theme = 'sphinx_rtd_theme'  # or 'furo', etc.
@@ -30,10 +30,12 @@ smv_rename_latest_version = 'latest'
 
 html_sidebars = {
     '**': [
+        'layout.html',
         'version-switch.html',
         'globaltoc.html',
         'relations.html',
         'searchbox.html',
-        'layout.html'
+        
     ]
 }
+html_js_files = ["versioning.js"]

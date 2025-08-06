@@ -1,4 +1,4 @@
-{% extends "!layout.html" %}
+<!-- {% extends "!layout.html" %}
 
 {% block footer %}
   {{ super() }}
@@ -33,5 +33,23 @@
     {{ super() }}
     <link rel="stylesheet" href="{{ pathto('_static/version_switch.css', 1) }}" />
     <script src="{{ pathto('_static/version_switcher.js', 1) }}"></script>
+{% endblock %} -->
+
+{% extends "!layout.html" %}
+
+{% block extrahead %}
+  {{ super() }}
+  <script src="{{ pathto('_static/version_switcher.js', 1) }}"></script>
+  <link rel="stylesheet" href="{{ pathto('_static/version_switch.css', 1) }}">
 {% endblock %}
 
+{% block footer %}
+  {{ super() }}
+
+  <div style="margin-top: 1em; text-align: center;">
+    <label for="version-select"><strong>📄 Switch Version:</strong></label>
+    <select id="version-select" onchange="onVersionChange(this.value)">
+      <!-- Options will be populated by JS -->
+    </select>
+  </div>
+{% endblock %}

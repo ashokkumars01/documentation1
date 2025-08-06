@@ -18,7 +18,7 @@ html_theme = "sphinx_rtd_theme"
 html_context = {
     'display_github': True,
 }
-templates_path = ['_templates', '_static']
+templates_path = ['Doc/_templates', 'Doc/_static']
 html_js_files = ['versions-menu.js']
 exclude_patterns = []
 

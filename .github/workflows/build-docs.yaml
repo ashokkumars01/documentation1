@@ -29,6 +29,9 @@ jobs:
       - name: Install Poetry
         run: pip install poetry
 
+      - name: Install jq
+        run: sudo apt-get install jq
+
       - name: Install dependencies
         run: poetry install --no-root
 
@@ -36,10 +39,20 @@ jobs:
         working-directory: Doc
         run: poetry run sphinx-multiversion . _build/html
 
-      - name: Generate versions.json
+      # - name: Generate versions.json
+      #   run: |
+      #     mkdir -p Doc/_build/html
+      #     echo '[{"version": "master", "url": "/master/"}, {"version": "v1.0.2", "url": "/v1.0.2/"}, {"version": "v1.0.0", "url": "/v1.0.0/"}]' > build/versions.json
+
+      - name: Generate dynamic versions.json
         run: |
+          sudo apt-get install jq -y
           mkdir -p Doc/_build/html
-          echo '[{"version": "master", "url": "/master/"}, {"version": "v1.0.2", "url": "/v1.0.2/"}, {"version": "v1.0.0", "url": "/v1.0.0/"}]' > build/versions.json
+          git fetch origin gh-pages
+          git worktree add gh-pages gh-pages
+          versions=$(ls gh-pages | grep -vE 'index\.html|404\.html' | jq -R -s -c 'split("\n")[:-1] | map({version: ., url: "/" + . + "/"})')
+          echo "$versions" > Doc/_build/html/versions.json
+          git worktree remove gh-pages
 
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v4

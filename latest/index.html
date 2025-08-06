@@ -100,10 +100,10 @@
       </div>
     </section>
   </div>
-  <div class="version-switcher">
+  <!-- <div class="version-switcher">
   <label for="version-select"><strong>Version:</strong></label>
   <select id="version-select" onchange="switchVersion(this)">
-    <!-- Versions loaded dynamically -->
+    Versions loaded dynamically
   </select>
 </div>
 
@@ -139,6 +139,38 @@ document.addEventListener('DOMContentLoaded', function () {
     })
     .catch(error => console.error('Version switcher load failed:', error));
 });
+</script> -->
+
+<div id="rst-versions" class="hidden rst-versions rst-badge" data-toggle="rst-versions" aria-label="Versions">
+    <span id="rst-current-version" class="rst-current-version" data-toggle="rst-current-version">
+        <span class="fa fa-book"> </span>
+        <span>v: </span><span id="current-version-label"></span>
+        <span id="rst-current-version-arrow"><svg version="1.1" width="1em" height="1em"
+                class="sd-octicon sd-octicon-chevron-down" viewBox="0 0 24 24" aria-hidden="true">
+                <path fill-rule="evenodd"
+                    d="M5.22 8.72a.75.75 0 000 1.06l6.25 6.25a.75.75 0 001.06 0l6.25-6.25a.75.75 0 00-1.06-1.06L12 14.44 6.28 8.72a.75.75 0 00-1.06 0z">
+                </path>
+            </svg></span>
+    </span>
+</div>
+<script>
+    $(document).ready(function (e) {
+        const project_path = "Your Project".replace(" ", "-").toLowerCase()
+        const pattern = new RegExp("(.*?\/" + project_path + "\/)(.*?)\/")
+        const match = pattern.exec(document.URL.toLowerCase())
+        if (match == null || match.length != 3) return
+
+        const base_url = match[1]
+        const script = document.createElement('script');
+        script.src = base_url + 'versions.js';
+        document.head.appendChild(script);
+
+        current_version = match[2]
+        script.addEventListener('load', function () {
+            //Use anonymous function because the versions and branches variables are provided by the loaded script file
+            populateVersionSelector(current_version, versions, branches, pullrequests)
+        })
+    });
 </script><script>
       jQuery(function () {
           SphinxRtdTheme.Navigation.enable(true);

@@ -71,6 +71,7 @@ html_sidebars = {
     ]
 }
 
+html_extra_path = ['versions.json']
 # Where to store versions.json
 html_context = {
     'display_github': True,

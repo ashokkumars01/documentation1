@@ -1,32 +1,21 @@
-{% extends "!layout.html" %}
 {% block extrahead %}
-  {{ super() }}
-  <script>
-    async function loadVersions() {
-      const response = await fetch("/versions.json");
-      const versions = await response.json();
-      const currentPath = window.location.pathname;
-      const currentVersion = currentPath.split("/")[1];
-
-      const select = document.createElement("select");
-      select.style.marginLeft = "20px";
-      versions.forEach(version => {
-        const option = document.createElement("option");
-        option.value = version;
-        option.text = version;
-        if (version === currentVersion) option.selected = true;
-        select.appendChild(option);
-      });
-
-      select.onchange = () => {
-        const newVersion = select.value;
-        const newPath = currentPath.replace(currentVersion, newVersion);
-        window.location.href = newPath;
+{{ super() }}
+<script>
+  fetch("/versions.json")
+    .then(response => response.json())
+    .then(versions => {
+      const selector = document.createElement("select");
+      selector.onchange = () => {
+        window.location.href = "/" + selector.value + "/";
       };
-
-      const container = document.querySelector(".wy-side-nav-search") || document.body;
-      container.appendChild(select);
-    }
-    loadVersions();
-  </script>
+      versions.forEach(v => {
+        const opt = document.createElement("option");
+        opt.value = v.name;
+        opt.textContent = v.name;
+        if (window.location.pathname.includes(v.name)) opt.selected = true;
+        selector.appendChild(opt);
+      });
+      document.body.prepend(selector);
+    });
+</script>
 {% endblock %}

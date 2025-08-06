@@ -62,47 +62,44 @@ on:
 #           # force_orphan: true
 
 
+
+
+
 jobs:
-  build-deploy:
+  docs:
     runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        version: ["latest", "v1.1.0", "v1.0.0"]
 
     steps:
-      - name: Checkout repo
+      - name: Checkout all branches and tags
         uses: actions/checkout@v4
         with:
-          fetch-depth: 0
+          fetch-depth: 0  # Needed for sphinx-multiversion
 
-      - name: Set up Python
+      - name: Setup Python
         uses: actions/setup-python@v5
         with:
-          python-version: '3.11'
+          python-version: 3.11
 
-      - name: Install dependencies
+      - name: Install Dependencies
         run: |
           pip install -r requirements.txt
 
-      - name: Build Sphinx HTML
+      - name: Build Documentation (all versions)
         run: |
-          mkdir -p _build/html/${{ matrix.version }}
-          if [[ "${{ matrix.version }}" == "latest" ]]; then
-            sphinx-build -b html Doc _build/html/latest
-          else
-            sphinx-build -b html versions/${{ matrix.version }}/Doc _build/html/${{ matrix.version }}
-          fi
+          sphinx-multiversion Doc _build/html
 
-      - name: Copy versions.json
+      - name: Generate versions.json
         run: |
-          echo '["latest", "v1.1.0", "v1.0.0"]' > _build/html/versions.json
+          echo '[' > _build/html/versions.json
+          git tag --list 'v*' | sort -V | awk '{print "{ \"name\": \""$1"\" }," }' >> _build/html/versions.json
+          echo '{ "name": "latest" }' >> _build/html/versions.json
+          echo ']' >> _build/html/versions.json
 
       - name: Deploy to GitHub Pages
-        if: matrix.version == 'latest'
-        uses: peaceiris/actions-gh-pages@v3
+        uses: peaceiris/actions-gh-pages@v4
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: _build/html
-          publish_branch: gh-pages
+
 
 

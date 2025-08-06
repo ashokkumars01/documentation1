@@ -37,8 +37,7 @@ jobs:
 
       - name: Build versioned docs
         working-directory: Doc
-        run: poetry run sphinx-multiversion . _build/html
-
+        run: poetry run sphinx-multiversion Doc Doc/_build/html --root .
       # - name: Generate versions.json
       #   run: |
       #     mkdir -p Doc/_build/html
@@ -48,11 +47,21 @@ jobs:
         run: |
           sudo apt-get install jq -y
           mkdir -p Doc/_build/html
+
+          # Fetch the gh-pages branch with versioned docs
           git fetch origin gh-pages
-          git worktree add gh-pages gh-pages
-          versions=$(ls gh-pages | grep -vE 'index\.html|404\.html' | jq -R -s -c 'split("\n")[:-1] | map({version: ., url: ("/" + . + "/")})')
+
+          # Use a temporary folder to mount gh-pages contents
+          git worktree add _gh-pages origin/gh-pages
+
+          # Extract folder names (versioned subdirs) from gh-pages and generate versions.json
+          versions=$(ls _gh-pages | grep -vE 'index\.html|404\.html|CNAME|\.gitignore|versions\.json' \
+            | jq -R -s -c 'split("\n")[:-1] | map({version: ., url: ("/" + . + "/")})')
+
           echo "$versions" > Doc/_build/html/versions.json
-          git worktree remove gh-pages
+
+          # Clean up the temporary worktree
+          git worktree remove _gh-pages --force
 
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v4
@@ -60,4 +69,5 @@ jobs:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: Doc/_build/html
           publish_branch: gh-pages
+          force_orphan: true
 

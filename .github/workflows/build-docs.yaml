@@ -37,7 +37,7 @@ jobs:
 
       - name: Build versioned docs
         working-directory: Doc
-        run: poetry run sphinx-multiversion ./Doc ./Doc/_build/html
+        run: poetry run sphinx-multiversion Doc Doc/_build/html --config Doc
       # - name: Generate versions.json
       #   run: |
       #     mkdir -p Doc/_build/html

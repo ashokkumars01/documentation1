@@ -66,8 +66,9 @@ smv_rename_latest_version = True
 html_theme = 'sphinx_rtd_theme'
 html_sidebars = {
     '**': [
-        'layout.html',
-        'searchbox.html'
+        'searchbox.html',
+        'globaltoc.html',
+        'relations.html'
     ]
 }
 

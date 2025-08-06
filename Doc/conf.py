@@ -34,4 +34,3 @@ html_sidebars = {
         'layout.html'
     ]
 }
-html_js_files = ["versioning.js"]

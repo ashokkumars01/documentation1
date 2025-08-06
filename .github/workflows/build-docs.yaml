@@ -50,7 +50,7 @@ jobs:
           mkdir -p Doc/_build/html
           git fetch origin gh-pages
           git worktree add gh-pages gh-pages
-          versions=$(ls gh-pages | grep -vE 'index\.html|404\.html' | jq -R -s -c 'split("\n")[:-1] | map({version: ., url: "/" + . + "/"})')
+          versions=$(ls gh-pages | grep -vE 'index\.html|404\.html' | jq -R -s -c 'split("\n")[:-1] | map({version: ., url: ("/" + . + "/")})')
           echo "$versions" > Doc/_build/html/versions.json
           git worktree remove gh-pages
 

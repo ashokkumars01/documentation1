@@ -1,0 +1,44 @@
+<div id="rst-versions" class="rst-versions rst-badge">
+  <span id="rst-current-version" class="rst-current-version" data-toggle="rst-current-version">
+    <span class="fa fa-book"> </span>
+    <span>Version: </span><span id="current-version-label"></span>
+    <span id="rst-current-version-arrow">
+      <svg version="1.1" width="1em" height="1em"
+        class="sd-octicon sd-octicon-chevron-down" viewBox="0 0 24 24" aria-hidden="true">
+        <path fill-rule="evenodd"
+          d="M5.22 8.72a.75.75 0 000 1.06l6.25 6.25a.75.75 0 001.06 0l6.25-6.25a.75.75 0 00-1.06-1.06L12 14.44 6.28 8.72a.75.75 0 00-1.06 0z">
+        </path>
+      </svg>
+    </span>
+  </span>
+  <ul id="version-list" style="display:none; position:absolute; background:white; list-style:none; padding:5px; border:1px solid #ccc;"></ul>
+</div>
+
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+    const versionRegex = /\/([^\/]+)\/?$/;
+    const match = window.location.pathname.match(versionRegex);
+    const currentVersion = match ? match[1] : "latest";
+    document.getElementById("current-version-label").textContent = currentVersion;
+
+    // Load versions.json dynamically
+    fetch("/versions.json")
+        .then(response => response.json())
+        .then(data => {
+            const versionList = document.getElementById("version-list");
+            data.forEach(v => {
+                const li = document.createElement("li");
+                const a = document.createElement("a");
+                a.href = v.url;
+                a.textContent = v.version;
+                li.appendChild(a);
+                versionList.appendChild(li);
+            });
+
+            // Show dropdown on click
+            document.getElementById("rst-current-version").addEventListener("click", () => {
+                versionList.style.display = versionList.style.display === "none" ? "block" : "none";
+            });
+        });
+});
+</script>

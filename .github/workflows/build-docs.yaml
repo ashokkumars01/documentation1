@@ -38,6 +38,7 @@ jobs:
 
       - name: Generate versions.json
         run: |
+          mkdir -p Doc/_build/html
           echo '[{"version": "master", "url": "/master/"}, {"version": "v1.0.2", "url": "/v1.0.2/"}, {"version": "v1.0.0", "url": "/v1.0.0/"}]' > build/versions.json
 
       - name: Deploy to GitHub Pages

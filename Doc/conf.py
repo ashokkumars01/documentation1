@@ -18,7 +18,8 @@ html_theme = "sphinx_rtd_theme"
 html_context = {
     'display_github': True,
 }
-templates_path = ['Doc/_templates']
+templates_path = ['_templates', '_static']
+html_js_files = ['versions-menu.js']
 exclude_patterns = []
 
 html_theme = 'sphinx_rtd_theme'  # or 'furo', etc.
@@ -38,4 +39,4 @@ html_sidebars = {
         
     ]
 }
-html_js_files = ["versioning.js"]
+

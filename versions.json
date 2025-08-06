@@ -17,5 +17,6 @@
 { "name": "v1.0.15" },
 { "name": "v1.0.16" },
 { "name": "v1.0.17" },
-{ "name": "latest" }
+{ "name": "v1.0.18" },
+{ "name": "latest", "url": "/latest/" }
 ]

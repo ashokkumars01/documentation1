@@ -20,7 +20,33 @@
     <script src="_static/searchtools.js"></script>
     <script src="_static/language_data.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
-    <link rel="search" title="Search" href="#" /> 
+    <link rel="search" title="Search" href="#" />
+ 
+<script>
+  fetch("/versions.json")
+    .then(response => response.json())
+    .then(versions => {
+      const current = window.location.pathname.split("/")[1];
+      const selector = document.createElement("select");
+      selector.style.position = "fixed";
+      selector.style.top = "1em";
+      selector.style.right = "1em";
+      selector.onchange = () => {
+        const version = selector.value;
+        const path = window.location.pathname.split("/").slice(2).join("/");
+        window.location.href = "/" + version + "/" + path;
+      };
+      versions.forEach(v => {
+        const opt = document.createElement("option");
+        opt.value = v.name;
+        opt.textContent = v.name;
+        if (v.name === current) opt.selected = true;
+        selector.appendChild(opt);
+      });
+      document.body.appendChild(selector);
+    });
+</script>
+
 </head>
 
 <body class="wy-body-for-nav"> 

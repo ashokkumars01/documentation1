@@ -51,7 +51,7 @@ extensions = [
     'sphinx.ext.autodoc',
     'sphinx_multiversion',
 ]
-templates_path = ['Doc/_templates']
+templates_path = ['_templates']
 
 html_static_path = ['_static']
 html_css_files = ['version_switch.css']
@@ -76,3 +76,10 @@ html_context = {
     'display_github': True,
     'versions_json_url': '/versions.json'
 }
+html_js_files = [
+    'version_switcher.js',
+]
+
+html_css_files = [
+    'version_switcher.css',
+]

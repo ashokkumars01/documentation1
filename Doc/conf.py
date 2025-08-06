@@ -51,11 +51,18 @@ extensions = [
     'sphinx.ext.autodoc',
     'sphinx_multiversion',
 ]
-
+templates_path = ['_templates']
 # sphinx-multiversion config
 smv_tag_whitelist = r'^v\d+\.\d+\.\d+$'  # Only tags like v1.0.0
 smv_branch_whitelist = r'^master$'        # Only build from `main`
 smv_remote_whitelist = r'^origin$'      # Only from origin
+
+html_sidebars = {
+    '**': [
+        'layout.html',
+        'searchbox.html'
+    ]
+}
 
 # Where to store versions.json
 html_context = {

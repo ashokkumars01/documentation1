@@ -51,7 +51,7 @@ extensions = [
     'sphinx.ext.autodoc',
     'sphinx_multiversion',
 ]
-templates_path = ['_templates']
+templates_path = ['Doc/_templates']
 # sphinx-multiversion config
 smv_tag_whitelist = r'^v\d+\.\d+\.\d+$'  # Only tags like v1.0.0
 smv_branch_whitelist = r'^master$'        # Only build from `main`

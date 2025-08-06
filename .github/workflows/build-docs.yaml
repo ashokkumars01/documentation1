@@ -95,6 +95,10 @@ jobs:
           echo '{ "name": "latest" }' >> _build/html/versions.json
           echo ']' >> _build/html/versions.json
 
+      - name: Rename master to latest
+        run: |
+          mv _build/html/master _build/html/latest
+
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v4
         with:

@@ -1,0 +1,40 @@
+<div class="version-switcher">
+  <label for="version-select"><strong>Version:</strong></label>
+  <select id="version-select" onchange="switchVersion(this)">
+    <!-- Versions loaded dynamically -->
+  </select>
+</div>
+
+<script>
+function switchVersion(select) {
+  const selectedVersion = select.value;
+  const currentPath = window.location.pathname;
+  const versionPattern = /\/(latest|v\d+\.\d+\.\d+)\//;
+
+  if (versionPattern.test(currentPath)) {
+    const newPath = currentPath.replace(versionPattern, '/' + selectedVersion + '/');
+    window.location.pathname = newPath;
+  } else {
+    // If path doesn't contain version, just prepend it
+    window.location.pathname = '/' + selectedVersion + currentPath;
+  }
+}
+
+document.addEventListener('DOMContentLoaded', function () {
+  fetch('/versions.json')
+    .then(response => response.json())
+    .then(data => {
+      const select = document.getElementById('version-select');
+      data.versions.forEach(function (version) {
+        const option = document.createElement('option');
+        option.value = version.name;
+        option.textContent = version.name;
+        if (window.location.pathname.includes('/' + version.name + '/')) {
+          option.selected = true;
+        }
+        select.appendChild(option);
+      });
+    })
+    .catch(error => console.error('Version switcher load failed:', error));
+});
+</script>

@@ -65,11 +65,7 @@ smv_rename_latest_version = True
 
 html_theme = 'sphinx_rtd_theme'
 html_sidebars = {
-    '**': [
-        'globaltoc.html',
-        'relations.html',
-        'searchbox.html',
-    ]
+    '**': ['versions.html', 'searchbox.html']
 }
 
 html_extra_path = ['versions.json']
@@ -85,3 +81,7 @@ html_js_files = [
 html_css_files = [
     'version_switch.css',
 ]
+html_theme_options = {
+    'logo_only': True,
+    'display_version': False,
+}

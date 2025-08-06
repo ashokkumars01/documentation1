@@ -1,4 +1,4 @@
-{% extends "!layout.html" %}
+<!-- {% extends "!layout.html" %}
 
 {% block footer %}
   {{ super() }}
@@ -33,4 +33,17 @@
     {{ super() }}
     <link rel="stylesheet" href="{{ pathto('_static/version_switch.css', 1) }}" />
     <script src="{{ pathto('_static/version_switcher.js', 1) }}"></script>
+{% endblock %} -->
+
+{% extends "!layout.html" %}
+
+{% block extrahead %}
+  {{ super() }}
+  <link rel="stylesheet" href="{{ pathto('_static/version_switch.css', 1) }}" />
+  <script src="{{ pathto('_static/version_switcher.js', 1) }}"></script>
+{% endblock %}
+
+{% block footer %}
+  {{ super() }}
+  <div id="version-switcher-container" style="margin-top: 1em; text-align: center;"></div>
 {% endblock %}

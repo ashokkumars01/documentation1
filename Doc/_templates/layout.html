@@ -1,4 +1,4 @@
-<!-- {% extends "!layout.html" %}
+{% extends "!layout.html" %}
 
 {% block footer %}
   {{ super() }}
@@ -33,49 +33,4 @@
     {{ super() }}
     <link rel="stylesheet" href="{{ pathto('_static/version_switch.css', 1) }}" />
     <script src="{{ pathto('_static/version_switcher.js', 1) }}"></script>
-{% endblock %} -->
-
-{% extends "!layout.html" %}
-
-{# Add extra content to the sidebar – version switcher placed here #}
-{% block sidebarlogo %}
-  {{ super() }}
-  <div id="version-switcher" style="padding: 10px 15px;">
-    <label for="version-select"><strong>Version:</strong></label>
-    <select id="version-select" onchange="switchVersion()" style="margin-top: 5px; width: 100%;">
-      <!-- Options will be dynamically populated by JS -->
-    </select>
-  </div>
-{% endblock %}
-
-{# Add the JavaScript for version switching at the end of the body #}
-{% block extrafooter %}
-  {{ super() }}
-  <script>
-    // Versions.json should be hosted at the root of your HTML output
-    fetch("/versions.json")
-      .then(response => response.json())
-      .then(data => {
-        const currentPath = window.location.pathname;
-        const currentVersion = currentPath.split("/")[1];
-        const select = document.getElementById("version-select");
-
-        data.versions.forEach(version => {
-          const option = document.createElement("option");
-          option.value = version;
-          option.textContent = version;
-          if (version === currentVersion) {
-            option.selected = true;
-          }
-          select.appendChild(option);
-        });
-      });
-
-    function switchVersion() {
-      const selected = document.getElementById("version-select").value;
-      const parts = window.location.pathname.split("/");
-      parts[1] = selected;
-      window.location.pathname = parts.join("/");
-    }
-  </script>
 {% endblock %}

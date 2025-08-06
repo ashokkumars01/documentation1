@@ -20,7 +20,11 @@
       <script src="_static/version_switcher.js?v=75b54a95"></script>
     <script src="_static/js/theme.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
-    <link rel="search" title="Search" href="search.html" /> 
+    <link rel="search" title="Search" href="search.html" />
+     
+    <link rel="stylesheet" href="_static/version_switch.css" />
+    <script src="_static/version_switcher.js"></script>
+
 </head>
 
 <body class="wy-body-for-nav"> 
@@ -139,7 +143,35 @@ document.addEventListener('DOMContentLoaded', function () {
       jQuery(function () {
           SphinxRtdTheme.Navigation.enable(true);
       });
-  </script> 
+  </script>
+   
+
+  <script>
+    fetch("/versions.json")
+      .then(r => r.json())
+      .then(versions => {
+        const current = location.pathname.split("/")[1];
+        const select = document.createElement("select");
+        select.id = "version-switcher";
+
+        versions.forEach(v => {
+          const opt = document.createElement("option");
+          opt.value = v.name;
+          opt.textContent = v.name;
+          if (v.name === current) opt.selected = true;
+          select.appendChild(opt);
+        });
+
+        select.onchange = () => {
+          const v = select.value;
+          const rest = location.pathname.split("/").slice(2).join("/");
+          location.href = "/" + v + "/" + rest;
+        };
+
+        document.body.appendChild(select);
+      });
+  </script>
+
 
 </body>
 </html>

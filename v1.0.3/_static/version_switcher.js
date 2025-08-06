@@ -1,34 +1,34 @@
 fetch("/versions.json")
-  .then(response => response.json())
-  .then(versions => {
-    const container = document.createElement("div");
-    container.style.position = "fixed";
-    container.style.top = "1rem";
-    container.style.right = "1rem";
-    container.style.background = "#fff";
-    container.style.padding = "0.5rem";
-    container.style.border = "1px solid #ccc";
-    container.style.zIndex = "1000";
+  .then((response) => response.json())
+  .then((versions) => {
+    const current = location.pathname.split("/")[1];
+
+    const container = document.getElementById("version-switcher-container");
+    if (!container) return;
 
     const label = document.createElement("label");
     label.textContent = "Version: ";
-    container.appendChild(label);
+    label.style.marginRight = "5px";
 
     const select = document.createElement("select");
-    versions.forEach(v => {
+    select.id = "version-switcher";
+
+    versions.forEach((v) => {
       const option = document.createElement("option");
-      option.text = v.version;
-      option.value = v.url;
-      if (window.location.pathname.startsWith(v.url)) {
+      option.value = v.url || v.name;
+      option.textContent = v.name;
+      if (v.name === current || v.url === current) {
         option.selected = true;
       }
       select.appendChild(option);
     });
 
     select.onchange = () => {
-      location.href = select.value;
+      const selected = select.value;
+      const rest = location.pathname.split("/").slice(2).join("/");
+      location.href = `/${selected}/${rest}`;
     };
 
+    container.appendChild(label);
     container.appendChild(select);
-    document.body.appendChild(container);
   });
